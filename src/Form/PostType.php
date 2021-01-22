@@ -15,9 +15,6 @@ class PostType extends AbstractType
             ->add('title')
             ->add('chapeau')
             ->add('content')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('user')
         ;
     }
 
