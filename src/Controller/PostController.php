@@ -55,11 +55,13 @@ class PostController extends AbstractController
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
+        $comments = $commentRepository->findBy(['post' => $post], ['id' => 'DESC']);
+        
 
         return $this->render('post/show.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
-            'comments' => $commentRepository->findAll(),
+            'comments' => $comments,
         ]);
     }
 
