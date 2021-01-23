@@ -1,0 +1,28 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block admin_body %}
+
+<div class="container-fluid d-flex">
+    <div class="row">
+        {% for post in posts %}
+            <div class="col-lg-6">
+                <div class="card m-4">
+                    <a class="link-dark text-decoration-none" href="{{ path('post_show', {'id': post.id}) }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text mb-2">{{ post.chapeau }}</p>
+                            <a href="{{ path('admin_post_edit', { id: post.id }) }}" class="btn btn-primary">Edit</a>
+                            <a href="#', { id: post.id }) }}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}

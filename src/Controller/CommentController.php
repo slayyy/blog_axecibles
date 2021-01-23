@@ -31,8 +31,6 @@ class CommentController extends AbstractController
         $id = $request->request->get('post_id');
         $post = $postRepository->find($id);
 
-        // dd($id, $this->getUser(), $request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setUser($this->getUser());
             $comment->setPost($post);
@@ -86,4 +84,5 @@ class CommentController extends AbstractController
 
         return $this->redirectToRoute('comment_index');
     }
+
 }

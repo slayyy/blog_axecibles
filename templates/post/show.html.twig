@@ -40,7 +40,7 @@
 
     {{ include('comment/_form.html.twig', { 'action': path('comment_new'), 'post' : post.id }) }}
 
-    {% for comment in comments %}
+    {% for comment in post.comments %}
         {{ comment.user.name }} : {{ comment.content }} {{comment.createdAt|date('Y-m-d H:i:s') }} <br>
     {% endfor %}
 

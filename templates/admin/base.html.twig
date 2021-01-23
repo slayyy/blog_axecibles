@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+ {% block body %}
+ <style>
+    .row ul li:hover {
+        background-color: #343b42 !important
+    }
+</style>
+
+<div class="row min-vh-100">
+    <div class="col-2 bg-secondary p-0">
+        <h3 class="p-2 pb-0 text-light">
+            Admin Panel
+        </h3>
+        <ul class="navbar-nav">
+            <a class="link-light text-decoration-none bg-dark mb-1" href="{{ path('admin_index') }}">
+                <li class="nav-item p-2">
+                    Post Index
+                </li>
+            </a>
+            <a class="link-light text-decoration-none bg-dark mb-1" href="{{ path('admin_post_new') }}">
+                <li class="nav-item p-2">
+                    New Post
+                </li>
+            </a>
+        </ul>
+    </div>
+    <div class="col-10">
+        {% block admin_body %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

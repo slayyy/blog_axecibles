@@ -41,8 +41,6 @@
                                     {{ app.user.name }}
                                 </a>
                                 <ul class="dropdown-menu right-menu" aria-labelledby="navbarDropdown">
-                                    {# <li><a class="dropdown-item" href="{{ path('profile') }}">Profile</a></li> #}
-                                    {# <li><a class="dropdown-item" href="{{ path('admin_index') }}">Admin</a></li> #}
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="{{ path('app_logout') }}">Log out</a></li>
                                 </ul>
@@ -63,11 +61,15 @@
             <div class="col-12">
                 <footer class="text-center text-lg-start">
                     <div class="d-flex align-items-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-                        <form action="" method="POST">
-                            <button class="btn link-danger" type="submit" class="text-dark">Get Admin role :) </button>
+                        <form action="{{ path('change_role') }}" method="POST">
+                            {% if not is_granted('ROLE_ADMIN') %}
+                                <button type="submit" class="btn link-danger">Get Admin Role :)</button>
+                            {% else %}
+                                <button type="submit" class="btn link-primary">Get User Role</button>
+                            {% endif %}
                         </form>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a class="text-dark" href="https://mdbootstrap.com/">Admin Panel</a>
+                            <a class="text-dark" href="{{ path('admin_index') }}">Admin Panel</a>
                         {% endif %}
                     </div>
                 </footer>
