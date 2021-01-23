@@ -23,7 +23,7 @@ class Comment
     private $user;
 
     /**
-     * @ORM\OneToOne(targetEntity=Post::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Post::class, cascade={"persist", "remove"})
      */
     private $post;
 
