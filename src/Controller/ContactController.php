@@ -33,13 +33,8 @@ class ContactController extends AbstractController
             $entityManager->persist($contact);
             $entityManager->flush();
 
-            return $this->redirectToRoute('contact_index');
+            return $this->redirectToRoute('home');
         }
-
-        return $this->render('contact/new.html.twig', [
-            'contact' => $contact,
-            'form' => $form->createView(),
-        ]);
     }
 
     #[Route('/{id}', name: 'contact_show', methods: ['GET'])]

@@ -1,4 +1,23 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {
+    attr: {
+        'action': path('contact_new')
+    }
+}) }}
+    {{ form_row(form.name, {
+        attr: {
+            'class': 'form-control'
+        }
+    }) }}
+    {{ form_row(form.email, {
+        attr: {
+            'class': 'form-control'
+        }
+    }) }}
+    {{ form_row(form.message, {
+        attr: {
+            'class': 'form-control',
+            'rows': '8'
+        }
+    }) }}
+    <button class="btn btn-primary mt-2">{{ button_label|default('Envoyer') }}</button>
 {{ form_end(form) }}

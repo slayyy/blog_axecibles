@@ -3,9 +3,27 @@
 {% block title %}Post index{% endblock %}
 
 {% block body %}
+<div class="container-fluid min-vh-100">
     <h1>Post index</h1>
-
-    <table class="table">
+    <div class="row">
+    
+        {% for post in posts %}
+        <div class="col-lg-4 mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.chapeau }}</p>
+                    <div class="d-flex justify-content-between">
+                        <a class="link-primary" href="{{ path('post_show', {'id': post.id}) }}">Read</a>
+                        <span>{{post.updatedAt|date('Y-m-d H:i:s')}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+    {# <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -37,7 +55,5 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
-
-    <a href="{{ path('post_new') }}">Create new</a>
+    </table> #}
 {% endblock %}
