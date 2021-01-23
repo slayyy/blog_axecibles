@@ -1,8 +1,9 @@
 {{ form_start(form, {
     attr: {
         'action': action
-    }
-}) }}
+}})}}
+
     {{ form_row(form.content) }}
+    <input type="hidden" name="post_id" value="{{post}}">
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

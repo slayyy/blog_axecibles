@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
+use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,14 +23,17 @@ class CommentController extends AbstractController
     }
 
     #[Route('/new', name: 'comment_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, PostRepository $postRepository): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
+        $id = $request->request->get('post_id');
+        $post = $postRepository->find($id);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setUser($this->getUser());
+            $comment->setPost($post);
             $comment->setIsValid(0);
             $comment->setCreatedAt(new \DateTime());
             $comment->setUpdatedAt(new \DateTime());
@@ -40,11 +44,6 @@ class CommentController extends AbstractController
 
             return $this->redirectToRoute('comment_index');
         }
-
-        return $this->render('comment/new.html.twig', [
-            'comment' => $comment,
-            'form' => $form->createView(),
-        ]);
     }
 
     #[Route('/{id}', name: 'comment_show', methods: ['GET'])]
