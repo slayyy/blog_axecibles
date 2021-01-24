@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
 use App\Repository\PostRepository;
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Repository\ContactRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +26,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/posts/new', name: 'admin_post_new', methods: ['GET'])]
-    public function new(Request $request): Response
+    public function newPost(Request $request): Response
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
@@ -34,7 +37,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/posts/{id}/edit', name: 'admin_post_edit', methods: ['GET'])]
-    public function edit(Post $post): Response
+    public function editPost(Post $post): Response
     {
         $form = $this->createForm(PostType::class, $post);
         
@@ -44,6 +47,22 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/contact', name: 'admin_contact_index', methods: ['GET'])]
+    public function contactIndex(ContactRepository $contactRepository): Response
+    {
+        return $this->render('admin/contact/index.html.twig', [
+            'contacts' => $contactRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/contact/{id}', name: 'admin_contact_show', methods: ['GET'])]
+    public function contactShow(Contact $contact): Response
+    {
+        return $this->render('admin/contact/show.html.twig', [
+            'contact' => $contact,
+        ]);
+    }
+    
     #[Route('/change_role', name: 'change_role', methods: ['POST'])]
     public function changeRole(): Response
     {

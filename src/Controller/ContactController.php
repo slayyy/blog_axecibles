@@ -64,14 +64,18 @@ class ContactController extends AbstractController
     }
 
     #[Route('/{id}', name: 'contact_delete', methods: ['DELETE'])]
-    public function delete(Request $request, Contact $contact): Response
+    public function delete(Request $request, ContactRepository $contactRepository, $id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$contact->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($contact);
-            $entityManager->flush();
+        $contact = $contactRepository->find($id);
+
+        if($contact) {
+            if ($this->isCsrfTokenValid('delete'.$contact->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($contact);
+                $entityManager->flush();
+            }
         }
 
-        return $this->redirectToRoute('contact_index');
+        return $this->redirectToRoute('admin_contact_index');
     }
 }
