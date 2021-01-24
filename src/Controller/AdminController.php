@@ -21,8 +21,16 @@ class AdminController extends AbstractController
     #[Route('/', name: 'admin_index')]
     public function index(PostRepository $postRepository): Response
     {
+        $post = null;
+
+        if($this->isGranted('ROLE_ADMIN')) {
+            $post = $postRepository->findAll();
+        }else {
+            $post = $postRepository->findBy(['user' => $this->getUser()->getId()]);
+        }
+
         return $this->render('admin/index.html.twig', [
-            'posts' => $postRepository->findAll()
+            'posts' => $post
         ]);
     }
 
@@ -38,14 +46,23 @@ class AdminController extends AbstractController
     }
 
     #[Route('/posts/{id}/edit', name: 'admin_post_edit', methods: ['GET'])]
-    public function editPost(Post $post): Response
+    public function editPost(Post $post, PostRepository $postRepository): Response
     {
-        $form = $this->createForm(PostType::class, $post);
-        
-        return $this->render('admin/post/edit.html.twig', [
-            'post' => $post,
-            'form' => $form->createView(),
-        ]);
+        $repo = $postRepository->findBy(["user" => $this->getUser()->getId()]);
+        // dd($repo);
+        $canEdit = in_array($post, $repo) && $this->isGranted('ROLE_USER');
+
+        if($canEdit || $this->isGranted('ROLE_ADMIN')) {
+            $form = $this->createForm(PostType::class, $post);
+            
+            return $this->render('admin/post/edit.html.twig', [
+                'post' => $post,
+                'form' => $form->createView(),
+            ]);
+        }else {
+            return $this->redirectToRoute('admin_index');
+        }
+
     }
 
     #[Route('/contact', name: 'admin_contact_index', methods: ['GET'])]
