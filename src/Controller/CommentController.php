@@ -74,15 +74,35 @@ class CommentController extends AbstractController
     }
 
     #[Route('/{id}', name: 'comment_delete', methods: ['DELETE'])]
-    public function delete(Request $request, Comment $comment): Response
+    public function delete(Request $request, CommentRepository $commentRepository, $id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($comment);
-            $entityManager->flush();
+        $comment = $commentRepository->find($id);
+
+        if($comment) {
+            if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($comment);
+                $entityManager->flush();
+            }
         }
 
-        return $this->redirectToRoute('comment_index');
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    #[Route('/{id}/validation', name: 'comment_validation', methods: ['POST'])]
+    public function validation(Comment $comment)
+    {
+        $isValid = $comment->getIsValid() == 1;
+
+        if(!$isValid) {
+            $comment->setIsValid(1);
+        }else {
+            $comment->setIsValid(0);
+        }
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('admin_post_edit', ['id' => $comment->getPost()->getId()]);
     }
 
 }
