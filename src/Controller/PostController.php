@@ -51,17 +51,14 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id}', name: 'post_show', methods: ['GET'])]
-    public function show(Post $post, CommentRepository $commentRepository): Response
+    public function show(Post $post): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
-        $comments = $commentRepository->findBy(['post' => $post], ['id' => 'DESC']);
-        
 
         return $this->render('post/show.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
-            'comments' => $comments,
         ]);
     }
 
@@ -75,13 +72,8 @@ class PostController extends AbstractController
             $post->setUpdatedAt(new \DateTime());
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('post_index');
+            return $this->redirectToRoute('admin_index');
         }
-
-        return $this->render('post/edit.html.twig', [
-            'post' => $post,
-            'form' => $form->createView(),
-        ]);
     }
 
     #[Route('/{id}', name: 'post_delete', methods: ['DELETE'])]

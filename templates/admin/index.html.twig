@@ -1,0 +1,55 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block admin_body %}
+
+<div class="container-fluid d-flex">
+    <div class="row">
+    {% for post in posts %}
+            <div class="col-lg-6">
+                <div class="card m-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text">{{ post.chapeau }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex">
+                                <a class="btn btn-primary me-2" href="{{ path('post_show', {'id': post.id}) }}">Show</a>
+                                <a class="btn btn-dark me-2" href="{{ path('admin_post_edit', { id: post.id }) }}">Edit</a>
+                                {{ include('admin/post/_delete_form.html.twig') }}
+                            </div>
+                            <div>
+                                <span>{{post.updatedAt|date('Y-m-d H:i:s')}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+        {# {% for post in posts %}
+            <div class="col-lg-6">
+                <div class="card m-4">
+                    <a class="link-dark text-decoration-none" href="{{ path('post_show', {'id': post.id}) }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text mb-2">{{ post.chapeau }}</p>
+                            <div class="d-flex align-items-center">
+                                <div class="d-flex">
+                                    <a href="{{ path('admin_post_edit', { id: post.id }) }}" class="btn btn-primary me-2">Edit</a>
+                                    {{ include('admin/post/_delete_form.html.twig') }}
+                                </div>
+                                <div>
+                                    <span>{{ post.updatedAt|date('Y-m-d H:i:s') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %} #}
+    </div>
+</div>
+
+
+
+{% endblock %}

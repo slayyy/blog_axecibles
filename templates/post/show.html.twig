@@ -40,8 +40,10 @@
 
     {{ include('comment/_form.html.twig', { 'action': path('comment_new'), 'post' : post.id }) }}
 
-    {% for comment in comments %}
-        {{ comment.user.name }} : {{ comment.content }} {{comment.createdAt|date('Y-m-d H:i:s') }} <br>
+    {% for comment in post.comments %}
+        {% if comment.isValid %}
+            {{ comment.user.name }} : {{ comment.content }} {{comment.createdAt|date('Y-m-d H:i:s') }} <br>
+        {% endif %}
     {% endfor %}
 
 {% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New Post{% endblock %}
+
+{% block admin_body %}
+    <div class="container-fluid vh-100">
+        <div class="row">
+            <div class="col-8">
+                <h1>Create new Post</h1>
+                {{ include('admin/post/_form.html.twig', { 'action': path('post_new') }) }}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
