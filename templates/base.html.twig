@@ -61,15 +61,17 @@
             <div class="col-12">
                 <footer class="text-center text-lg-start">
                     <div class="d-flex align-items-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-                        <form action="{{ path('change_role') }}" method="POST">
-                            {% if not is_granted('ROLE_ADMIN') %}
-                                <button type="submit" class="btn link-danger">Get Admin Role :)</button>
-                            {% else %}
-                                <button type="submit" class="btn link-primary">Get User Role</button>
+                        {% if app.user %}
+                            <form action="{{ path('change_role') }}" method="POST">
+                                {% if not is_granted('ROLE_ADMIN') %}
+                                    <button type="submit" class="btn link-danger">Get Admin Role :)</button>
+                                {% else %}
+                                    <button type="submit" class="btn link-primary">Get User Role</button>
+                                {% endif %}
+                            </form>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a class="text-dark" href="{{ path('admin_index') }}">Admin Panel</a>
                             {% endif %}
-                        </form>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a class="text-dark" href="{{ path('admin_index') }}">Admin Panel</a>
                         {% endif %}
                     </div>
                 </footer>

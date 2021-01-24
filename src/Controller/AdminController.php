@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Repository\PostRepository;
 use App\Entity\Post;
+use App\Entity\User;
 use App\Form\PostType;
 use App\Repository\ContactRepository;
 use App\Repository\UserRepository;
@@ -61,6 +62,47 @@ class AdminController extends AbstractController
         return $this->render('admin/contact/show.html.twig', [
             'contact' => $contact,
         ]);
+    }
+
+
+    #[Route('/user', name: 'admin_user_index', methods: ['GET'])]
+    public function userIndex(UserRepository $userRepository): Response
+    {
+        return $this->render('admin/user/index.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/{id}/validation', name: 'user_validation', methods: ['POST'])]
+    public function userValidation(User $user)
+    {
+        $isValid = $user->getIsValid() == 1;
+
+        if(!$isValid) {
+            $user->setIsValid(1);
+        }else {
+            $user->setIsValid(0);
+        }
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('admin_user_index');
+    }
+
+    #[Route('/{id}', name: 'user_delete', methods: ['DELETE'])]
+    public function userDelete(Request $request, UserRepository $userRepository, $id): Response
+    {
+        $user = $userRepository->find($id);
+
+        if($user) {
+            if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($user);
+                $entityManager->flush();
+            }
+        }
+
+        return $this->redirectToRoute('admin_user_index');
     }
     
     #[Route('/change_role', name: 'change_role', methods: ['POST'])]
