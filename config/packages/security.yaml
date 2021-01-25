@@ -35,9 +35,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     role_hierarchy:
-        ROLE_ADMIN: ROLE_USER
+        ROLE_VALID: ROLE_USER
+        ROLE_ADMIN: ROLE_VALID
         
     access_control:
-        - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/admin/contact, roles: ROLE_ADMIN }
-        - { path: ^/admin/user, roles: ROLE_ADMIN }
+        - { path: ^/admin/change_role, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin, roles: ROLE_VALID }
