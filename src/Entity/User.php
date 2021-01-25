@@ -53,11 +53,6 @@ class User implements UserInterface
      */
     private $comments;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $is_valid;
-
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -214,15 +209,8 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getIsValid(): ?bool
+    public function __toString()
     {
-        return $this->is_valid;
-    }
-
-    public function setIsValid(bool $is_valid): self
-    {
-        $this->is_valid = $is_valid;
-
-        return $this;
+        return $this->name;
     }
 }

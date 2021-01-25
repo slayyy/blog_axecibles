@@ -9,19 +9,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+
+/**
+ * @IsGranted("ROLE_ADMIN")
+ */
 #[Route('/contact')]
 class ContactController extends AbstractController
 {
-    #[Route('/', name: 'contact_index', methods: ['GET'])]
-    public function index(ContactRepository $contactRepository): Response
-    {
-        return $this->render('contact/index.html.twig', [
-            'contacts' => $contactRepository->findAll(),
-        ]);
-    }
-
-    #[Route('/new', name: 'contact_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'contact_new', methods: ['POST'])]
     public function new(Request $request): Response
     {
         $contact = new Contact();
@@ -37,15 +34,8 @@ class ContactController extends AbstractController
         }
     }
 
-    #[Route('/{id}', name: 'contact_show', methods: ['GET'])]
-    public function show(Contact $contact): Response
-    {
-        return $this->render('contact/show.html.twig', [
-            'contact' => $contact,
-        ]);
-    }
 
-    #[Route('/{id}/edit', name: 'contact_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'contact_edit', methods: ['POST'])]
     public function edit(Request $request, Contact $contact): Response
     {
         $form = $this->createForm(ContactType::class, $contact);
@@ -56,11 +46,6 @@ class ContactController extends AbstractController
 
             return $this->redirectToRoute('contact_index');
         }
-
-        return $this->render('contact/edit.html.twig', [
-            'contact' => $contact,
-            'form' => $form->createView(),
-        ]);
     }
 
     #[Route('/{id}', name: 'contact_delete', methods: ['DELETE'])]
