@@ -8,6 +8,15 @@
             'class': 'form-control'
         }
     }) }}
+    {% if app.request.attributes.get('_route') == "admin_post_edit" %}
+        {{ form_row(form.user, {
+            'label': 'Author',
+            attr: {
+                'class': 'form-control',
+            }
+        }) }}
+    {% endif %}
+
     {{ form_row(form.chapeau, {
         attr: {
             'class': 'form-control',
@@ -19,5 +28,5 @@
             'rows': '7'
         },
     }) }}
-    <button class="btn btn-primary mt-2">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary mt-4">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

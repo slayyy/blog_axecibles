@@ -69,7 +69,7 @@
                                     <button type="submit" class="btn link-primary">Get User Role</button>
                                 {% endif %}
                             </form>
-                            {% if is_granted('ROLE_ADMIN') %}
+                            {% if is_granted('ROLE_VALID') %}
                                 <a class="text-dark" href="{{ path('admin_index') }}">Admin Panel</a>
                             {% endif %}
                         {% endif %}

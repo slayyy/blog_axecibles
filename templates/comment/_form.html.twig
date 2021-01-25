@@ -3,7 +3,12 @@
         'action': action
 }})}}
 
-    {{ form_row(form.content) }}
+    {{ form_row(form.content, {
+        'label': 'Comment',
+        attr: {
+            'class': 'form-control w-50'
+        }
+    }) }}
     <input type="hidden" name="post_id" value="{{post}}">
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary mt-2 mb-5">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
