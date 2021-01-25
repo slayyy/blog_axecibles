@@ -8,7 +8,7 @@
             <div class="col-lg-8">
                 <h1>Edit Post</h1>
 
-                {{ include('admin/post/_form.html.twig', { 'button_label': 'Update', 'action': path('post_edit', { id: post.id }) }) }}
+                {{ include('admin/post/_form_edit.html.twig', { 'button_label': 'Update', 'action': path('post_edit', { id: post.id }) }) }}
             </div>
         </div>
 

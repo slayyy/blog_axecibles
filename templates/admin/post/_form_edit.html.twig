@@ -8,12 +8,14 @@
             'class': 'form-control'
         }
     }) }}
-    {{ form_row(form.user, {
-        'label': 'Author',
-        attr: {
-            'class': 'form-control',
-        }
-    }) }}
+    {% if app.request.attributes.get('_route') == "admin_post_edit" %}
+        {{ form_row(form.user, {
+            'label': 'Author',
+            attr: {
+                'class': 'form-control',
+            }
+        }) }}
+    {% endif %}
 
     {{ form_row(form.chapeau, {
         attr: {
