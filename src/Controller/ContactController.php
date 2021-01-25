@@ -11,10 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-
-/**
- * @IsGranted("ROLE_ADMIN")
- */
 #[Route('/contact')]
 class ContactController extends AbstractController
 {
@@ -33,21 +29,10 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('home');
         }
     }
-
-
-    #[Route('/{id}/edit', name: 'contact_edit', methods: ['POST'])]
-    public function edit(Request $request, Contact $contact): Response
-    {
-        $form = $this->createForm(ContactType::class, $contact);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('contact_index');
-        }
-    }
-
+    
+    /**
+     * @IsGranted("ROLE_ADMIN")
+     */
     #[Route('/{id}', name: 'contact_delete', methods: ['DELETE'])]
     public function delete(Request $request, ContactRepository $contactRepository, $id): Response
     {
