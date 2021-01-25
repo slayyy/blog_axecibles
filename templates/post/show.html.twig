@@ -11,7 +11,7 @@
                     <h5 class="card-title">{{ post.title }}</h5>
                     <div class="d-flex justify-content-between mb-3">
                         <span>
-                            Author : {{ post.user }}
+                            Author : <br> {{ post.user }}
                         </span>
                         <span>
                             Date : {{ post.updatedAt|date('Y-m-d H:i:s') }}
@@ -34,12 +34,12 @@
                     <div class="col-lg-4">
                         {{comment.createdAt|date('Y-m-d H:i:s') }} <br>
                     </div>
-                {% endif %}
-                <div class="row mt-2">
-                    <div class="col-lg-9">
-                        {{ comment.content }} 
+                    <div class="row mt-2">
+                        <div class="col-lg-9">
+                            {{ comment.content }} 
+                        </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
         {% endfor %}
 
