@@ -13,7 +13,7 @@ composer install
 
 ### Connection à la base donnée
 
-Pour vous connectez à la base de donnée il faudra modifier cette ligne dans le fichier ``.env``
+Pour vous connecter à la base de donnée il faudra modifier cette ligne dans le fichier ``.env``
 
 ```
 DATABASE_URL="mysql://db_user:db_password@127.0.0.1:8889/blog_axecibles"
