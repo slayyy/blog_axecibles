@@ -20,22 +20,18 @@ class PostType extends AbstractType
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title');
-        $builder->add('chapeau');
-        $builder->add('content');
-
-        // if($this->requeststack->getCurrentRequest()->get('_route') == 'admin_post_edit') {
-            $builder->add('user', EntityType::class, [
-                'class' => User::class,
-            ]);
-        // }
+        $builder->add('title')
+                ->add('chapeau')
+                ->add('content')
+                ->add('user', EntityType::class, [
+            'class' => User::class,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Post::class,
-            // 'user' => null,
             'allow_extra_fields' => true
         ]);
     }
