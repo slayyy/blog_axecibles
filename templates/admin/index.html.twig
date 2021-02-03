@@ -7,6 +7,7 @@
 <div class="container-fluid d-flex">
     <div class="row w-100">
     {% for post in posts %}
+        {% if is_granted('POST', post) %}
             <div class="col-lg-6">
                 <div class="card m-4">
                     <div class="card-body">
@@ -26,6 +27,7 @@
                     </div>
                 </div>
             </div>
+        {% endif %}
     {% endfor %}
     </div>
 </div>

@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Contact;
 use App\Repository\PostRepository;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Form\PostType;
-use App\Repository\ContactRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,31 +18,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 #[Route('/admin')]
 class AdminController extends AbstractController
 {
-    /**
-     * @IsGranted("ROLE_VALID")
-     */
     #[Route('/', name: 'admin_index')]
     public function index(PostRepository $postRepository): Response
     {
-        $post = null;
-
-        if($this->isGranted('ROLE_ADMIN')) {
-            $post = $postRepository->findBy([], ['id' => 'DESC']);
-        }else {
-            $post = $postRepository->findBy(['user' => $this->getUser()->getId()]);
-        }
+        $this->denyAccessUnlessGranted('USER');
 
         return $this->render('admin/index.html.twig', [
-            'posts' => $post
+            'posts' => $postRepository->findBy([], ['id' => 'DESC'])
         ]);
     }
 
-    /**
-     * @IsGranted("ROLE_VALID")
-     */
     #[Route('/posts/new', name: 'admin_post_new', methods: ['GET'])]
-    public function newPost(Request $request): Response
+    public function newPost(): Response
     {
+        $this->denyAccessUnlessGranted('USER');
+        
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
 
@@ -53,67 +41,34 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("ROLE_VALID")
-     */
     #[Route('/posts/{id}/edit', name: 'admin_post_edit', methods: ['GET'])]
-    public function editPost(Post $post, PostRepository $postRepository): Response
+    public function editPost(Post $post): Response
     {
-        $repo = $postRepository->findBy(["user" => $this->getUser()->getId()]);
-        $canEdit = in_array($post, $repo) && $this->isGranted('ROLE_VALID');
+        $this->denyAccessUnlessGranted('POST', $post);
 
-        if($canEdit || $this->isGranted('ROLE_ADMIN')) {
-            $form = $this->createForm(PostType::class, $post);
-            
-            return $this->render('admin/post/edit.html.twig', [
-                'post' => $post,
-                'form' => $form->createView(),
-            ]);
-        }else {
-            return $this->redirectToRoute('admin_index');
-        }
-    }
-
-    /**
-     * @IsGranted("ROLE_ADMIN")
-     */
-    #[Route('/contact', name: 'admin_contact_index', methods: ['GET'])]
-    public function contactIndex(ContactRepository $contactRepository): Response
-    {
-        return $this->render('admin/contact/index.html.twig', [
-            'contacts' => $contactRepository->findAll(),
+        $form = $this->createForm(PostType::class, $post);
+        
+        return $this->render('admin/post/edit.html.twig', [
+            'post' => $post,
+            'form' => $form->createView(),
         ]);
     }
 
-    /**
-     * @IsGranted("ROLE_ADMIN")
-     */
-    #[Route('/contact/{id}', name: 'admin_contact_show', methods: ['GET'])]
-    public function contactShow(Contact $contact): Response
-    {
-        return $this->render('admin/contact/show.html.twig', [
-            'contact' => $contact,
-        ]);
-    }
-
-
-    /**
-     * @IsGranted("ROLE_ADMIN")
-     */
     #[Route('/user', name: 'admin_user_index', methods: ['GET'])]
     public function userIndex(UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('ADMIN');
+        
         return $this->render('admin/user/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }
 
-    /**
-     * @IsGranted("ROLE_ADMIN")
-     */
     #[Route('/{id}/validation', name: 'user_validation', methods: ['POST'])]
     public function userValidation(User $user)
     {
+        $this->denyAccessUnlessGranted('ADMIN');
+
         $isValid = in_array('ROLE_VALID', $user->getRoles());
         
         if($isValid) {
@@ -127,12 +82,11 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_user_index');
     }
 
-    /**
-     * @IsGranted("ROLE_ADMIN")
-     */
     #[Route('/{id}', name: 'user_delete', methods: ['DELETE'])]
     public function userDelete(Request $request, UserRepository $userRepository, $id): Response
     {
+        $this->denyAccessUnlessGranted('ADMIN');
+
         $user = $userRepository->find($id);
 
         if($user) {
@@ -149,6 +103,8 @@ class AdminController extends AbstractController
     #[Route('/change_role', name: 'change_role', methods: ['POST'])]
     public function changeRole(): Response
     {
+        $this->denyAccessUnlessGranted('AUTH');
+
         $user = $this->getUser();
         $isAdmin = $this->isGranted('ROLE_ADMIN');
         $route = '';

@@ -37,7 +37,3 @@ security:
     role_hierarchy:
         ROLE_VALID: ROLE_USER
         ROLE_ADMIN: ROLE_VALID
-        
-    access_control:
-        - { path: ^/admin/change_role, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/admin, roles: ROLE_VALID }
