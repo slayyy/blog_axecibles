@@ -35,7 +35,7 @@
                 <td>
                     <form action="{{ path('user_validation', { id: user.id }) }}" method="POST">
                         <button type="submit" class="btn">
-                            {% if user.isValid %}
+                            {% if 'ROLE_VALID' in user.getRoles %}
                                 <i class="fas fa-times text-danger"></i>
                             {% else %}
                                 <i class="fas fa-check text-success"></i>
@@ -43,7 +43,7 @@
                         </button>
                     </form>
                 </td>
-                <td>{{ user.isValid ? 'Yes' : 'No' }}</td>
+                <td>{{ 'ROLE_VALID' in user.getRoles ? 'Yes' : 'No' }}</td>
                 <td>
                     {{ include('admin/user/_delete_form.html.twig') }}
                 </td>
