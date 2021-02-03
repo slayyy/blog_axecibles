@@ -3,47 +3,44 @@
 {% block title %}Post{% endblock %}
 
 {% block body %}
-    <h1>Post</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ post.id }}</td>
-            </tr>
-            <tr>
-                <th>Author</th>
-                <td>{{ post.user.name }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ post.title }}</td>
-            </tr>
-            <tr>
-                <th>Chapeau</th>
-                <td>{{ post.chapeau }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ post.content }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ post.createdAt ? post.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ post.updatedAt ? post.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row justify-content-center mt-3 mb-5">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>
+                            Author : <br> {{ post.user }}
+                        </span>
+                        <span>
+                            Date : {{ post.updatedAt|date('Y-m-d H:i:s') }}
+                        </span>
+                    </div>
+                    <p class="card-text">{{ post.content }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{ include('comment/_form.html.twig', { 'action': path('comment_new'), 'post' : post.id }) }}
 
-    {% for comment in post.comments %}
-        {% if comment.isValid %}
-            {{ comment.user.name }} : {{ comment.content }} {{comment.createdAt|date('Y-m-d H:i:s') }} <br>
-        {% endif %}
-    {% endfor %}
+        {% for comment in post.comments %}
+            <div class="row mb-4">
+                {% if comment.isValid %}
+                    <div class="col-lg-8 fw-bold">
+                        {{ comment.user.name }}
+                    </div> 
+                    <div class="col-lg-4">
+                        {{comment.createdAt|date('Y-m-d H:i:s') }} <br>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-9">
+                            {{ comment.content }} 
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
 
 {% endblock %}
